@@ -31,7 +31,7 @@ public class MoviesFragment extends Fragment {
 
     private final String LOG_TAG = MoviesFragment.class.getSimpleName();
     public RequestQueue myRequestQueue;
-
+    public String test = "HII";
     private ImageAdapter myAdapter;
     // all movies result
     public ArrayList<Movie> result = new ArrayList<>();
