@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="app.com.example.mohammed.popularmovies.MainActivity">
+
+    <TextView
+        android:id="@+id/tv_main_sort_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:padding="6dp"
+        android:textAlignment="center"
+        android:background="#009688"
+        android:textColor="#ffffff"
+        android:text="Welcome Back"/>
+    <fragment
+        android:id="@+id/movies_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="app.com.example.mohammed.popularmovies.MoviesFragment"
+        tools:context="app.com.example.mohammed.sunshine.MainActivity"
+        tools:layout="@layout/fragment_placeholder" />
+
+</LinearLayout>
