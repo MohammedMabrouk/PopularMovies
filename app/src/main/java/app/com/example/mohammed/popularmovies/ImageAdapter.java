@@ -12,8 +12,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import JavaBeans.Movie;
+
 
 public class ImageAdapter extends ArrayAdapter<Movie> {
+    private static final String LOG_TAG = ImageAdapter.class.getSimpleName();
 
     public ImageAdapter(Activity context, List<Movie> movies) {
         super(context, 0, movies);
@@ -22,22 +25,27 @@ public class ImageAdapter extends ArrayAdapter<Movie> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Movie movie = getItem(position);
+        View v;
         if (null == convertView) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item, parent, false);
+            v = LayoutInflater.from(getContext()).inflate(R.layout.grid_item, parent, false);
+        }else{
+            v = convertView;
         }
-        ImageView iv = (ImageView)convertView.findViewById(R.id.poster_img);
+        ImageView iv = (ImageView)v.findViewById(R.id.poster_img);
 
         Picasso.with(getContext())
                 .load(movie.getPoster())
-                .fit() // will explain later
+                .error(R.drawable.default_img)
+                .fit()
                 .into(iv);
 
-        TextView name = (TextView)convertView.findViewById(R.id.movie_name);
+        TextView name = (TextView)v.findViewById(R.id.movie_name);
         name.setText(movie.getTitle());
+        /*
+        if(movie.isFavMovie()){
+            name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.heart_after_16, 0, 0, 0);
+        }*/
 
-        TextView rate = (TextView)convertView.findViewById(R.id.rating);
-        rate.setText(movie.getVoteAverage());
-
-        return convertView;
+        return v;
     }
 }

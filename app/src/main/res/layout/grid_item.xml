@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="225dp"
     tools:context="MoviesFragment">
 
     <ImageView
         android:id="@+id/poster_img"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_height="match_parent"
+        android:src="@drawable/default_img" />
+
     <TextView
         android:id="@+id/movie_name"
         android:layout_width="match_parent"
@@ -19,16 +20,9 @@
         android:layout_alignLeft="@+id/poster_img"
         android:layout_alignTop="@+id/poster_img"
         android:textAlignment="center"
-        android:background="#000000"
-        android:textColor="#ffffff" />
-    <TextView
-        android:id="@+id/rating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ddsdsd"
-        android:layout_alignBottom="@+id/poster_img"
-        android:layout_alignRight="@+id/poster_img"
-        android:layout_alignLeft="@+id/poster_img"
-        android:textAlignment="center"/>
+        android:background="#E0E0E0"
+        android:textColor="#4e4d4d"
+        android:paddingLeft="2dp"/>
+
 
 </RelativeLayout>

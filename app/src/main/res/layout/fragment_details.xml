@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="movie"
+            type="JavaBeans.Movie" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FAFAFA"
+            android:orientation="vertical"
+            android:padding="2dp"
+            tools:context="app.com.example.mohammed.popularmovies.DetailsFragment">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E0E0E0"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/poster"
+                    android:layout_width="150dp"
+                    android:layout_height="180dp"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/poster"
+                    android:padding="10dp"
+                    android:text="@{movie.releaseDate}"
+                    android:textColor="#4e4d4d"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date"
+                    android:layout_toRightOf="@id/poster"
+                    android:padding="10dp"
+                    android:text="@{movie.voteAverage}"
+                    android:textColor="#4e4d4d"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/fav_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rate"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/poster"
+                    android:drawableLeft="@drawable/heart_before_16"
+                    android:text="@string/add_fav" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="#E0E0E0"
+                android:padding="5dp"
+                android:text="@{movie.overview}"
+                android:textColor="#4e4d4d" />
+
+
+            <TextView
+                android:id="@+id/trailers_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:background="#E0E0E0"
+                android:padding="10dp"
+                android:text="Trailers"
+                android:textColor="#4e4d4d"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    style="?android:attr/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:id="@+id/pbar1_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..."
+                    android:layout_centerHorizontal="true"
+                   android:layout_below="@+id/progressBar1" />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linear_layout_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="5px"
+                android:background="#E0E0E0"
+                android:padding="10dp"
+                android:text="Reviews"
+                android:textColor="#4e4d4d"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ProgressBar
+                    android:id="@+id/progressBar2"
+                    style="?android:attr/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:id="@+id/pbar2_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..."
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/progressBar2" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

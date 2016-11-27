@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/popular"
-        android:title="@string/popular"/>
-    <item android:id="@+id/top_rated"
-        android:title="@string/top_rated"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/rating_type"
+        android:icon="@drawable/rating"
+        android:title="Sort Type"
+        compat:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/popular"
+                android:title="Popular" />
+            <item
+                android:id="@+id/top_rated"
+                android:title="Top Rated" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/favorite"
+        android:title="Favorite"
+        android:icon="@drawable/heart_after"
+        compat:showAsAction="ifRoom"/>
 </menu>

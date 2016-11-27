@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FAFAFA"
     tools:context="app.com.example.mohammed.popularmovies.MainActivity">
 
     <TextView
@@ -14,15 +15,14 @@
         android:textSize="20sp"
         android:padding="6dp"
         android:textAlignment="center"
-        android:background="#009688"
-        android:textColor="#ffffff"
-        android:text="Welcome Back"/>
-    <fragment
-        android:id="@+id/movies_fragment"
+        android:background="#F5F5F5"
+        android:textColor="?android:attr/textColorSecondary"
+        android:fontFamily="sans-serif"
+        android:text="Popular"/>
+
+    <FrameLayout
+        android:id="@+id/movies_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="app.com.example.mohammed.popularmovies.MoviesFragment"
-        tools:context="app.com.example.mohammed.sunshine.MainActivity"
-        tools:layout="@layout/fragment_placeholder" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

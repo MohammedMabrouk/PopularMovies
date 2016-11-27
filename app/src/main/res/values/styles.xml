@@ -8,4 +8,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- fav button style -->
+    <style name="fav_true">
+        <item name="android:text">@string/remove_fav</item>
+        <item name="android:drawableLeft">@drawable/heart_after_small</item>
+    </style>
+
+    <style name="fav_false">
+        <item name="android:text">@string/add_fav</item>
+        <item name="android:drawableLeft">@drawable/heart_before_small</item>
+    </style>
+
 </resources>

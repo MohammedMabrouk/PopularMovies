@@ -1,15 +1,17 @@
-package app.com.example.mohammed.popularmovies;
+package JavaBeans;
+
+import java.io.Serializable;
 
 /**
  * Created by Mohammed on 10/30/2016.
  */
 
-public class Review {
+public class Review implements Serializable {
     private String id;
     private String author;
     private String content;
 
-    Review(String id, String author, String content){
+    public Review(String id, String author, String content){
         this.id = id;
         this.author = author;
         this.content = content;

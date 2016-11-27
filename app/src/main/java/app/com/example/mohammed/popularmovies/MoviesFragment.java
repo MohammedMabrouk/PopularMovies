@@ -1,18 +1,19 @@
 package app.com.example.mohammed.popularmovies;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -27,80 +28,99 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import DB.DBAdapter;
+import JavaBeans.Movie;
+
 public class MoviesFragment extends Fragment {
+    // tablet support
+    private MovieListener mMovieListener;
+
+    void setMovieListener(MovieListener mMovieListener) {
+        this.mMovieListener = mMovieListener;
+    }
+
 
     private final String LOG_TAG = MoviesFragment.class.getSimpleName();
-    public RequestQueue myRequestQueue;
-    public String test = "HII";
+    private RequestQueue myRequestQueue;
     private ImageAdapter myAdapter;
     // all movies result
     public ArrayList<Movie> result = new ArrayList<>();
     // gridView of this fragment
     private GridView gridview;
+    // favorite movies data
+    private SharedPreferences sharedpreferences;
+    // screen : pop or top_rated
+    private int page;
+    // fav movies
+    DBAdapter dbAdapter;
+
+    private View mRootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG + "  findme", "onCreate()");
         // create options menu
         setHasOptionsMenu(true);
         myRequestQueue = VolleySingleton.getInstance(getActivity().getApplicationContext()).getRequestQueue();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main, menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         TextView sort_type_view = (TextView) getActivity().findViewById(R.id.tv_main_sort_type);
-        if(id == R.id.popular){
+        if (id == R.id.popular) {
             updateMovies("popular");
             sort_type_view.setText("Popular");
-        }else{
+            page = 1;
+        } else if (id == R.id.top_rated) {
             updateMovies("top_rated");
             sort_type_view.setText("Top Rated");
+            page = 2;
+        } else if (id == R.id.favorite) {
+            Intent intent = new Intent(getActivity(), FavoritesActivity.class);
+            startActivity(intent);
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (page == 1) {
+            Log.d(LOG_TAG, "page : 1");
+            updateMovies("popular");
+        } else {
+            Log.d(LOG_TAG, "page : 2");
+            updateMovies("top_rated");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(LOG_TAG, " onCreateView()");
+
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_placeholder, container, false);
-        gridview = (GridView) rootView.findViewById(R.id.gridview);
+        mRootView = inflater.inflate(R.layout.fragment_movies, container, false);
+        gridview = (GridView) mRootView.findViewById(R.id.gridview);
+        dbAdapter = new DBAdapter(getActivity());
 
         updateMovies("popular");
+        page = 1;
 
         // add listener to each image on grid
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                // get the clicked movie info
-                String movie_id = result.get(position).getId();
-                String movie_name = result.get(position).getTitle();
-                String poster = result.get(position).getPoster();
-                String date = result.get(position).getReleaseDate();
-                String overview = result.get(position).getOverview();
-                String rate = result.get(position).getVoteAverage();
-
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                intent.putExtra("id", movie_id);
-                intent.putExtra("movie_name", movie_name);
-                intent.putExtra("poster", poster);
-                intent.putExtra("date", date);
-                intent.putExtra("overview", overview);
-                intent.putExtra("rate", rate);
-                startActivity(intent);
+                mMovieListener.setSelectedMovie(result.get(position));
             }
         });
 
-        return rootView;
+        return mRootView;
     }
 
-    private void updateMovies(String reuest_type){
+    private void updateMovies(String reuest_type) {
         Context myContext = getActivity().getApplicationContext();
         String URL = "http://api.themoviedb.org/3/movie/" + reuest_type + "?api_key="
                 + VolleySingleton.getInstance(myContext).getApi_key();
@@ -109,14 +129,15 @@ public class MoviesFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(LOG_TAG , " response : " + response);
+                        Log.d(LOG_TAG, " response : " + response);
                         try {
                             JSONObject resultJson = new JSONObject(response);
                             JSONArray moviesArrayJson = resultJson.getJSONArray("results");
                             //result = new ArrayList<>();
                             result.clear();
 
-                            for(int i = 0 ; i < moviesArrayJson.length() ; i++){
+                            for (int i = 0; i < moviesArrayJson.length(); i++) {
+
                                 JSONObject J = moviesArrayJson.getJSONObject(i);
                                 result.add(new Movie(
                                         J.getString("id"),
@@ -124,11 +145,18 @@ public class MoviesFragment extends Fragment {
                                         "http://image.tmdb.org/t/p/w185/" + J.getString("poster_path"),
                                         J.getString("overview"),
                                         J.getString("vote_average"),
-                                        J.getString("release_date")
+                                        J.getString("release_date"),
+                                        false
                                 ));
                             }
-                            myAdapter = new ImageAdapter(getActivity(), result);
-                            gridview.setAdapter(myAdapter);
+                            if (getActivity() != null) {
+                                myAdapter = new ImageAdapter(getActivity(), result);
+                                gridview.setAdapter(myAdapter);
+                            }
+
+                            ProgressBar spinner;
+                            spinner = (ProgressBar)mRootView.findViewById(R.id.progressBar);
+                            spinner.setVisibility(View.GONE);
 
                         } catch (JSONException e) {
                             Log.d(LOG_TAG, "error : " + e);
@@ -139,12 +167,24 @@ public class MoviesFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(LOG_TAG, "ERROR :" + error);
-                TextView sort_type_view = (TextView) getActivity().findViewById(R.id.tv_main_sort_type);
-                sort_type_view.setText("NO INTERNET");
+                ProgressBar spinner;
+                spinner = (ProgressBar)mRootView.findViewById(R.id.progressBar);
+                spinner.setVisibility(View.GONE);
+                addNetworkErrorMsg();
             }
         });
         VolleySingleton.getInstance(myContext).addToRequestQueue(stringRequest);
 
+    }
+
+    public void addNetworkErrorMsg() {
+        try {
+            TextView sort_type_view = (TextView) getActivity().findViewById(R.id.tv_main_sort_type);
+            sort_type_view.setText("no internet connection.");
+            sort_type_view.setGravity(Gravity.CENTER_VERTICAL);
+        } catch (Exception e) {
+            Log.d(LOG_TAG, "" + e);
+        }
     }
 
 
