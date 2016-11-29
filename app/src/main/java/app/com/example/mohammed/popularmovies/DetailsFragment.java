@@ -160,7 +160,7 @@ public class DetailsFragment extends Fragment {
         }
         movie.setFavMovie(fav);
         // load details
-        movie.setVoteAverage("Rate : " + movie.getVoteAverage());
+        movie.setVoteAverage(movie.getVoteAverage());
         binding.setMovie(movie);
         // load poster
         ImageView view = (ImageView) rootView.findViewById(R.id.poster);

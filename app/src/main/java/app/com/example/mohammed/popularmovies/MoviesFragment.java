@@ -49,8 +49,9 @@ public class MoviesFragment extends Fragment {
     private GridView gridview;
     // favorite movies data
     private SharedPreferences sharedpreferences;
+    private String MyPREFERENCES = "mypref";
     // screen : pop or top_rated
-    private int page;
+    public String page;
     // fav movies
     DBAdapter dbAdapter;
 
@@ -63,6 +64,22 @@ public class MoviesFragment extends Fragment {
         // create options menu
         setHasOptionsMenu(true);
         myRequestQueue = VolleySingleton.getInstance(getActivity().getApplicationContext()).getRequestQueue();
+        sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        TextView sort_type_view = (TextView) getActivity().findViewById(R.id.tv_main_sort_type);
+        if(sort_type_view != null){
+            if(readPage() == "popular"){
+                sort_type_view.setText("Popular");
+            }else{
+                sort_type_view.setText("Top Rated");
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(LOG_TAG + "  findme", "onDestroy()");
     }
 
     @Override
@@ -72,31 +89,21 @@ public class MoviesFragment extends Fragment {
         if (id == R.id.popular) {
             updateMovies("popular");
             sort_type_view.setText("Popular");
-            page = 1;
+            writePage("popular");
         } else if (id == R.id.top_rated) {
             updateMovies("top_rated");
             sort_type_view.setText("Top Rated");
-            page = 2;
+            writePage("top_rated");
         } else if (id == R.id.favorite) {
             Intent intent = new Intent(getActivity(), FavoritesActivity.class);
             startActivity(intent);
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-        if (page == 1) {
-            Log.d(LOG_TAG, "page : 1");
-            updateMovies("popular");
-        } else {
-            Log.d(LOG_TAG, "page : 2");
-            updateMovies("top_rated");
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,8 +114,13 @@ public class MoviesFragment extends Fragment {
         gridview = (GridView) mRootView.findViewById(R.id.gridview);
         dbAdapter = new DBAdapter(getActivity());
 
-        updateMovies("popular");
-        page = 1;
+        if(readPage() == "popular"){
+            updateMovies("popular");
+        }
+        else{
+            updateMovies("top_rated");
+        }
+
 
         // add listener to each image on grid
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -185,6 +197,16 @@ public class MoviesFragment extends Fragment {
         } catch (Exception e) {
             Log.d(LOG_TAG, "" + e);
         }
+    }
+
+    public void writePage(String page){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("page", page);
+        editor.commit();
+    }
+
+    public String readPage(){
+        return sharedpreferences.getString("page", "popular");
     }
 
 

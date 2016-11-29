@@ -11,19 +11,21 @@ import com.facebook.stetho.Stetho;
 
 import JavaBeans.Movie;
 
-public class MainActivity extends AppCompatActivity implements MovieListener {
+public class MainActivity extends AppCompatActivity implements MovieListener{
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    boolean isTwoPane = false;
+    boolean isTwoPane = false;// screen : pop or top_rated
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(LOG_TAG, "on create");
 
         MoviesFragment mMoviesFragment = new MoviesFragment();
         // set the activity to be a listener of the fragment
         mMoviesFragment.setMovieListener(this);
+
 
         if (getSupportFragmentManager().findFragmentById(R.id.movies_layout) != null) {
             Log.d(LOG_TAG, "--> layout found");
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements MovieListener {
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -84,6 +87,18 @@ public class MainActivity extends AppCompatActivity implements MovieListener {
         super.onResume();
         if(!isTwoPane){
             setTitle("Popular Movies");
+
         }
+        Log.d(LOG_TAG, "on resume");
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "on destroy");
+    }
+
+
+
+
 }
