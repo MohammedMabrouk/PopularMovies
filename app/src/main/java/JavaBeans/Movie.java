@@ -10,6 +10,7 @@ public class Movie implements Serializable {
 
     private String title;
     private String poster;
+    private String backdrop;
     private String overview;
     private String voteAverage;
     private String releaseDate;
@@ -20,16 +21,18 @@ public class Movie implements Serializable {
     public Movie(){
         title = "";
         poster = "";
+        backdrop = "";
         overview = "";
         voteAverage = "";
         releaseDate = "";
         id = "";
         favMovie = false;
     }
-    public Movie(String id, String title, String poster, String overview, String voteAverage, String releaseDate, boolean favMovie){
+    public Movie(String id, String title, String poster, String backdrop, String overview, String voteAverage, String releaseDate, boolean favMovie){
         this.id = id;
         this.title = title;
         this.poster = poster;
+        this.backdrop = backdrop;
         this.overview = overview;
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
@@ -44,6 +47,9 @@ public class Movie implements Serializable {
 
     public String getPoster(){
         return poster;
+    }
+    public String getBackdrop(){
+        return backdrop;
     }
 
     public String getOverview(){

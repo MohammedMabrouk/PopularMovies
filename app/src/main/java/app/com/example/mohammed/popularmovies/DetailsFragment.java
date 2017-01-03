@@ -151,6 +151,7 @@ public class DetailsFragment extends Fragment {
 
         final String id = movie.getId();
         String poster = movie.getPoster();
+        String dropback = movie.getBackdrop();
         String title = movie.getTitle();
         getActivity().setTitle(title);
 
@@ -164,7 +165,7 @@ public class DetailsFragment extends Fragment {
         binding.setMovie(movie);
         // load poster
         ImageView view = (ImageView) rootView.findViewById(R.id.poster);
-        Picasso.with(getActivity()).load(poster).error(R.drawable.default_img).into(view);
+        Picasso.with(getActivity()).load(dropback).error(R.drawable.default_img).into(view);
         // load fav button
         loadFavButton(rootView, movie);
 

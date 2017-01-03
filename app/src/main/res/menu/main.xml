@@ -10,15 +10,24 @@
         <menu>
             <item
                 android:id="@+id/popular"
-                android:title="Popular" />
+                android:title="@string/popular_movies" />
             <item
                 android:id="@+id/top_rated"
-                android:title="Top Rated" />
+                android:title="@string/top_rated_movies" />
+            <!-- <item
+                android:id="@+id/latest"
+                android:title="@string/latest_movies" /> -->
+            <item
+                android:id="@+id/now_playing"
+                android:title="@string/now_playing_movies" />
+            <item
+                android:id="@+id/upcomming"
+                android:title="@string/upcoming_movies" />
         </menu>
     </item>
     <item
         android:id="@+id/favorite"
-        android:title="Favorite"
+        android:title="@string/fav_movies"
         android:icon="@drawable/heart_after"
         compat:showAsAction="ifRoom"/>
 </menu>

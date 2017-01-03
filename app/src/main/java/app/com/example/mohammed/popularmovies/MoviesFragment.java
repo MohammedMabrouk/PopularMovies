@@ -69,9 +69,13 @@ public class MoviesFragment extends Fragment {
         TextView sort_type_view = (TextView) getActivity().findViewById(R.id.tv_main_sort_type);
         if(sort_type_view != null){
             if(readPage() == "popular"){
-                sort_type_view.setText("Popular");
-            }else{
-                sort_type_view.setText("Top Rated");
+                sort_type_view.setText(R.string.popular_movies);
+            }else if (readPage() == "top_rated"){
+                sort_type_view.setText(R.string.top_rated_movies);
+            }else if (readPage() == "now_playing"){
+                sort_type_view.setText(R.string.now_playing_movies);
+            }else if (readPage() == "upcoming"){
+                sort_type_view.setText(R.string.upcoming_movies);
             }
         }
     }
@@ -88,13 +92,25 @@ public class MoviesFragment extends Fragment {
         TextView sort_type_view = (TextView) getActivity().findViewById(R.id.tv_main_sort_type);
         if (id == R.id.popular) {
             updateMovies("popular");
-            sort_type_view.setText("Popular");
+            sort_type_view.setText(R.string.popular_movies);
             writePage("popular");
         } else if (id == R.id.top_rated) {
             updateMovies("top_rated");
-            sort_type_view.setText("Top Rated");
+            sort_type_view.setText(R.string.top_rated_movies);
             writePage("top_rated");
-        } else if (id == R.id.favorite) {
+        } else if (id == R.id.now_playing) {
+            updateMovies("now_playing");
+            sort_type_view.setText(R.string.now_playing_movies);
+            writePage("now_playing");
+        } /*else if (id == R.id.latest) {
+            updateMovies("latest");
+            sort_type_view.setText(R.string.latest_movies);
+            writePage("latest");
+        } */else if (id == R.id.upcomming) {
+            updateMovies("upcoming");
+            sort_type_view.setText(R.string.upcoming_movies);
+            writePage("upcoming");
+        }else if (id == R.id.favorite) {
             Intent intent = new Intent(getActivity(), FavoritesActivity.class);
             startActivity(intent);
         }
@@ -116,10 +132,14 @@ public class MoviesFragment extends Fragment {
 
         if(readPage() == "popular"){
             updateMovies("popular");
-        }
-        else{
+        }else if(readPage() == "top_rated"){
             updateMovies("top_rated");
+        }else if(readPage() == "now_playing"){
+            updateMovies("now_playing");
+        }else if(readPage() == "upcoming"){
+            updateMovies("upcoming");
         }
+
 
 
         // add listener to each image on grid
@@ -155,6 +175,7 @@ public class MoviesFragment extends Fragment {
                                         J.getString("id"),
                                         J.getString("original_title"),
                                         "http://image.tmdb.org/t/p/w185/" + J.getString("poster_path"),
+                                        "http://image.tmdb.org/t/p/w342/" + J.getString("backdrop_path"),
                                         J.getString("overview"),
                                         J.getString("vote_average"),
                                         J.getString("release_date"),

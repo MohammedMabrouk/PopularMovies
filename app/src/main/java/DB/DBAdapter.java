@@ -29,12 +29,13 @@ public class DBAdapter {
         SQLiteDatabase db = dbhelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         // insert movie
-        values.put("movie_id", movie.getId());
-        values.put("title", movie.getTitle());
-        values.put("poster", movie.getPoster());
-        values.put("overview", movie.getOverview());
-        values.put("vote", movie.getVoteAverage());
-        values.put("release_date", movie.getReleaseDate());
+        values.put(dbhelper.FAV_TABLE_MOVIE_ID, movie.getId());
+        values.put(dbhelper.FAV_TABLE_TITLE, movie.getTitle());
+        values.put(dbhelper.FAV_TABLE_POSTER, movie.getPoster());
+        values.put(dbhelper.FAV_TABLE_DROPBACK, movie.getBackdrop());
+        values.put(dbhelper.FAV_TABLE_OVERVIEW, movie.getOverview());
+        values.put(dbhelper.FAV_TABLE_VOTE, movie.getVoteAverage());
+        values.put(dbhelper.FAV_TABLE_RELEASE_DATE, movie.getReleaseDate());
 
 
         // insert trailers
@@ -89,6 +90,7 @@ public class DBAdapter {
                 {DBHelper.FAV_TABLE_MOVIE_ID,
                         DBHelper.FAV_TABLE_TITLE,
                         DBHelper.FAV_TABLE_POSTER,
+                        DBHelper.FAV_TABLE_DROPBACK,
                         DBHelper.FAV_TABLE_OVERVIEW,
                         DBHelper.FAV_TABLE_VOTE,
                         DBHelper.FAV_TABLE_RELEASE_DATE
@@ -112,9 +114,10 @@ public class DBAdapter {
             int index1 = c.getColumnIndex(DBHelper.FAV_TABLE_MOVIE_ID);
             int index2 = c.getColumnIndex(DBHelper.FAV_TABLE_TITLE);
             int index3 = c.getColumnIndex(DBHelper.FAV_TABLE_POSTER);
-            int index4 = c.getColumnIndex(DBHelper.FAV_TABLE_OVERVIEW);
-            int index5 = c.getColumnIndex(DBHelper.FAV_TABLE_VOTE);
-            int index6 = c.getColumnIndex(DBHelper.FAV_TABLE_RELEASE_DATE);
+            int index4 = c.getColumnIndex(DBHelper.FAV_TABLE_DROPBACK);
+            int index5 = c.getColumnIndex(DBHelper.FAV_TABLE_OVERVIEW);
+            int index6 = c.getColumnIndex(DBHelper.FAV_TABLE_VOTE);
+            int index7 = c.getColumnIndex(DBHelper.FAV_TABLE_RELEASE_DATE);
             c.moveToFirst();
             Movie m = new Movie(
                     c.getString(index1),
@@ -123,6 +126,7 @@ public class DBAdapter {
                     c.getString(index4),
                     c.getString(index5),
                     c.getString(index6),
+                    c.getString(index7),
                     false
             );
             c.close();
@@ -237,6 +241,7 @@ public class DBAdapter {
                 {DBHelper.FAV_TABLE_MOVIE_ID,
                         DBHelper.FAV_TABLE_TITLE,
                         DBHelper.FAV_TABLE_POSTER,
+                        DBHelper.FAV_TABLE_DROPBACK,
                         DBHelper.FAV_TABLE_OVERVIEW,
                         DBHelper.FAV_TABLE_VOTE,
                         DBHelper.FAV_TABLE_RELEASE_DATE
@@ -256,9 +261,10 @@ public class DBAdapter {
         int index1 = c.getColumnIndex(DBHelper.FAV_TABLE_MOVIE_ID);
         int index2 = c.getColumnIndex(DBHelper.FAV_TABLE_TITLE);
         int index3 = c.getColumnIndex(DBHelper.FAV_TABLE_POSTER);
-        int index4 = c.getColumnIndex(DBHelper.FAV_TABLE_OVERVIEW);
-        int index5 = c.getColumnIndex(DBHelper.FAV_TABLE_VOTE);
-        int index6 = c.getColumnIndex(DBHelper.FAV_TABLE_RELEASE_DATE);
+        int index4 = c.getColumnIndex(DBHelper.FAV_TABLE_DROPBACK);
+        int index5 = c.getColumnIndex(DBHelper.FAV_TABLE_OVERVIEW);
+        int index6 = c.getColumnIndex(DBHelper.FAV_TABLE_VOTE);
+        int index7 = c.getColumnIndex(DBHelper.FAV_TABLE_RELEASE_DATE);
         while (c.moveToNext()) {
             counter++;
 
@@ -269,6 +275,7 @@ public class DBAdapter {
                     c.getString(index4),
                     c.getString(index5),
                     c.getString(index6),
+                    c.getString(index7),
                     true
             );
             result.add(m);
@@ -297,18 +304,19 @@ public class DBAdapter {
     class DBHelper extends SQLiteOpenHelper {
         // The DB
         private static final String DATABASE_NAME = "PopularMovies";
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 3;
         // favMovies table
         private static final String FAV_TABLE_TNAME = "favMovie";
         //private static final String FAV_TABLE_ID = "_id";
         private static final String FAV_TABLE_MOVIE_ID = "movie_id";
         private static final String FAV_TABLE_TITLE = "title";
         private static final String FAV_TABLE_POSTER = "poster";
+        private static final String FAV_TABLE_DROPBACK = "dropback";
         private static final String FAV_TABLE_OVERVIEW = "overview";
         private static final String FAV_TABLE_VOTE = "vote";
         private static final String FAV_TABLE_RELEASE_DATE = "release_date";
         private static final String FAV_TABLE_CREATE = "CREATE TABLE " + FAV_TABLE_TNAME +
-                "("+ FAV_TABLE_MOVIE_ID + " VARCHAR(255), " + FAV_TABLE_TITLE + " VARCHAR(255), " + FAV_TABLE_POSTER + " VARCHAR(255), " +
+                "("+ FAV_TABLE_MOVIE_ID + " VARCHAR(255), " + FAV_TABLE_TITLE + " VARCHAR(255), " + FAV_TABLE_POSTER + " VARCHAR(255), " + FAV_TABLE_DROPBACK + " VARCHAR(255), " +
                 FAV_TABLE_OVERVIEW + " TEXT, " + FAV_TABLE_VOTE + " VARCHAR(255), " + FAV_TABLE_RELEASE_DATE + " VARCHAR(255));";
         // review table
         private static final String REVIEW_TABLE_TNAME = "review";
