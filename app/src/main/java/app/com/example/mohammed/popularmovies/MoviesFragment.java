@@ -63,6 +63,7 @@ public class MoviesFragment extends Fragment {
         Log.d(LOG_TAG + "  findme", "onCreate()");
         // create options menu
         setHasOptionsMenu(true);
+
         myRequestQueue = VolleySingleton.getInstance(getActivity().getApplicationContext()).getRequestQueue();
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
@@ -139,6 +140,10 @@ public class MoviesFragment extends Fragment {
         }else if(readPage() == "upcoming"){
             updateMovies("upcoming");
         }
+        // to be changed
+        else{
+            updateMovies("popular");
+        }
 
 
 
@@ -169,9 +174,10 @@ public class MoviesFragment extends Fragment {
                             result.clear();
 
                             for (int i = 0; i < moviesArrayJson.length(); i++) {
-
+                                // movie JSON
                                 JSONObject J = moviesArrayJson.getJSONObject(i);
-                                result.add(new Movie(
+
+                                Movie m = new Movie(
                                         J.getString("id"),
                                         J.getString("original_title"),
                                         "http://image.tmdb.org/t/p/w185/" + J.getString("poster_path"),
@@ -180,7 +186,11 @@ public class MoviesFragment extends Fragment {
                                         J.getString("vote_average"),
                                         J.getString("release_date"),
                                         false
-                                ));
+                                );
+                                // Genres
+                                JSONArray genresArray = J.getJSONArray("genre_ids");
+                                m.setGenres(convertJSONArray(genresArray));
+                                result.add(m);
                             }
                             if (getActivity() != null) {
                                 myAdapter = new ImageAdapter(getActivity(), result);
@@ -228,6 +238,18 @@ public class MoviesFragment extends Fragment {
 
     public String readPage(){
         return sharedpreferences.getString("page", "popular");
+    }
+
+
+    // convert
+    public ArrayList<String> convertJSONArray(JSONArray data) throws JSONException {
+        ArrayList<String> result = new ArrayList<>();
+        String J;
+        for(int i = 0 ; i < data.length(); i++){
+            J = data.getString(i);
+            result.add(J);
+        }
+        return result;
     }
 
 

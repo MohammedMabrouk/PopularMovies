@@ -29,6 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import DB.DBAdapter;
 import JavaBeans.Movie;
@@ -46,6 +48,8 @@ public class DetailsFragment extends Fragment {
 
     private LinearLayout reviewsLayout;
     private ArrayList<Review> reviews = new ArrayList<>();
+
+    private TextView genres_text_view;
 
     private DBAdapter dbAdapter;
 
@@ -114,7 +118,7 @@ public class DetailsFragment extends Fragment {
         mRootView = rootView;
         trailersLayout = (LinearLayout) rootView.findViewById(R.id.linear_layout_trailers);
         reviewsLayout = (LinearLayout) rootView.findViewById(R.id.linear_layout_reviews);
-
+        genres_text_view = (TextView) rootView.findViewById(R.id.genres);
         // view details
         loadDetails(bundle, intent, binding, mRootView);
 
@@ -154,6 +158,8 @@ public class DetailsFragment extends Fragment {
         String dropback = movie.getBackdrop();
         String title = movie.getTitle();
         getActivity().setTitle(title);
+        // genres
+        ArrayList<String> genres = movie.getGenres();
 
         boolean fav = false;
         if (dbAdapter.getMovie(id) != null) {
@@ -166,6 +172,11 @@ public class DetailsFragment extends Fragment {
         // load poster
         ImageView view = (ImageView) rootView.findViewById(R.id.poster);
         Picasso.with(getActivity()).load(dropback).error(R.drawable.default_img).into(view);
+        // load genres
+        if(type) {
+            getGenres(genres);
+        }
+
         // load fav button
         loadFavButton(rootView, movie);
 
@@ -180,6 +191,62 @@ public class DetailsFragment extends Fragment {
             // get reviews
             getReviewsDB(movie.getId());
         }
+
+    }
+    public void getGenres(final ArrayList<String> Genres){
+
+
+        Context myContext = getActivity().getApplicationContext();
+
+        String URL = "https://api.themoviedb.org/3/genre/movie/list?api_key="
+                + VolleySingleton.getInstance(myContext).getApi_key() + "&language=en-US";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String result = "";
+                            Map genreList = new HashMap();
+                            String genreID, genreName;
+                            ArrayList<String> genres = Genres;
+
+                            JSONObject resultJson = new JSONObject(response);
+                            JSONArray genresArrayJson = resultJson.getJSONArray("genres");
+
+                            if (genresArrayJson.length() > 0) {
+                                for (int i = 0; i < genresArrayJson.length(); i++) {
+                                    JSONObject J = genresArrayJson.getJSONObject(i);
+                                    genreID = J.getString("id");
+                                    genreName = J.getString("name");
+                                    genreList.put(genreID, genreName);
+                                }
+                                // handle view
+                                for(int i = 0 ; i < genres.size() ; i++){
+                                    String tmp = (String) genreList.get(genres.get(i));
+                                    result += (tmp + ", ");
+                                }
+                                if(result.length() > 0) result = result.substring(0, result.length()-2);
+                                genres_text_view.setText(result);
+                            }
+
+
+                        } catch (JSONException e) {
+                            Log.d(LOG_TAG, "error : " + e);
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+
+        VolleySingleton.getInstance(myContext).addToRequestQueue(stringRequest);
     }
 
     public void loadFavButton(View rootView, final Movie movie){

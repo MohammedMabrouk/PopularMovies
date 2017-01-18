@@ -1,6 +1,6 @@
 package JavaBeans;
-
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Mohammed on 10/21/2016.
@@ -16,6 +16,7 @@ public class Movie implements Serializable {
     private String releaseDate;
     private String id;
     private boolean favMovie;
+    private ArrayList<String> genres;
 
 
     public Movie(){
@@ -27,6 +28,7 @@ public class Movie implements Serializable {
         releaseDate = "";
         id = "";
         favMovie = false;
+        genres = new ArrayList<>();
     }
     public Movie(String id, String title, String poster, String backdrop, String overview, String voteAverage, String releaseDate, boolean favMovie){
         this.id = id;
@@ -72,6 +74,14 @@ public class Movie implements Serializable {
         favMovie = b;
     }
     public void setVoteAverage(String s){voteAverage = s;}
+
+    public void setGenres(ArrayList<String> genres){
+        this.genres = genres;
+    }
+
+    public ArrayList<String> getGenres(){
+        return this.genres;
+    }
 
 
 }
