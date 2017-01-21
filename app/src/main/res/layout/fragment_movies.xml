@@ -24,4 +24,6 @@
         android:columnWidth="120dp"
         android:stretchMode="columnWidth"
         android:gravity="center" />
+
+
 </FrameLayout>

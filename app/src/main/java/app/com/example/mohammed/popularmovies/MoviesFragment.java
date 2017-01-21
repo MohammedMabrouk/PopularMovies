@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -50,8 +52,14 @@ public class MoviesFragment extends Fragment {
     // favorite movies data
     private SharedPreferences sharedpreferences;
     private String MyPREFERENCES = "mypref";
-    // screen : pop or top_rated
-    public String page;
+
+    ///////////////////// page navigation //////////////////
+    // page number
+    public int pageNumber;
+    public int totalPages;
+    public ImageView leftArrow, rightArrow;
+    public TextView pageNumberTextView;
+
     // fav movies
     DBAdapter dbAdapter;
 
@@ -61,6 +69,7 @@ public class MoviesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG + "  findme", "onCreate()");
+        pageNumber = 1;
         // create options menu
         setHasOptionsMenu(true);
 
@@ -68,6 +77,10 @@ public class MoviesFragment extends Fragment {
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         TextView sort_type_view = (TextView) getActivity().findViewById(R.id.tv_main_sort_type);
+        leftArrow = (ImageView) getActivity().findViewById(R.id.left_arrow);
+        rightArrow = (ImageView) getActivity().findViewById(R.id.right_arrow);
+        pageNumberTextView = (TextView) getActivity().findViewById(R.id.page_number);
+
         if(sort_type_view != null){
             if(readPage() == "popular"){
                 sort_type_view.setText(R.string.popular_movies);
@@ -92,25 +105,29 @@ public class MoviesFragment extends Fragment {
         int id = item.getItemId();
         TextView sort_type_view = (TextView) getActivity().findViewById(R.id.tv_main_sort_type);
         if (id == R.id.popular) {
-            updateMovies("popular");
+            pageNumber = 1;
+            updateMovies("popular", pageNumber);
             sort_type_view.setText(R.string.popular_movies);
             writePage("popular");
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
         } else if (id == R.id.top_rated) {
-            updateMovies("top_rated");
+            pageNumber = 1;
+            updateMovies("top_rated", pageNumber);
             sort_type_view.setText(R.string.top_rated_movies);
             writePage("top_rated");
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
         } else if (id == R.id.now_playing) {
-            updateMovies("now_playing");
+            pageNumber = 1;
+            updateMovies("now_playing", pageNumber);
             sort_type_view.setText(R.string.now_playing_movies);
             writePage("now_playing");
-        } /*else if (id == R.id.latest) {
-            updateMovies("latest");
-            sort_type_view.setText(R.string.latest_movies);
-            writePage("latest");
-        } */else if (id == R.id.upcomming) {
-            updateMovies("upcoming");
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
+        }else if (id == R.id.upcomming) {
+            pageNumber = 1;
+            updateMovies("upcoming", pageNumber);
             sort_type_view.setText(R.string.upcoming_movies);
             writePage("upcoming");
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
         }else if (id == R.id.favorite) {
             Intent intent = new Intent(getActivity(), FavoritesActivity.class);
             startActivity(intent);
@@ -131,18 +148,26 @@ public class MoviesFragment extends Fragment {
         gridview = (GridView) mRootView.findViewById(R.id.gridview);
         dbAdapter = new DBAdapter(getActivity());
 
+
+
+
         if(readPage() == "popular"){
-            updateMovies("popular");
+            updateMovies("popular", pageNumber);
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
         }else if(readPage() == "top_rated"){
-            updateMovies("top_rated");
+            updateMovies("top_rated", pageNumber);
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
         }else if(readPage() == "now_playing"){
-            updateMovies("now_playing");
+            updateMovies("now_playing", pageNumber);
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
         }else if(readPage() == "upcoming"){
-            updateMovies("upcoming");
+            updateMovies("upcoming", pageNumber);
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
         }
         // to be changed
         else{
-            updateMovies("popular");
+            updateMovies("popular", pageNumber);
+            if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
         }
 
 
@@ -154,21 +179,51 @@ public class MoviesFragment extends Fragment {
             }
         });
 
+
+        // page navigation
+        if(leftArrow != null && rightArrow != null){
+            leftArrow.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if(pageNumber > 1){
+                        pageNumber--;
+                        updateMovies(readPage(), pageNumber);
+                        if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
+                        Toast.makeText(getActivity(), pageNumber + "/" + totalPages, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            rightArrow.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if(pageNumber < totalPages){
+                        pageNumber++;
+                        updateMovies(readPage(), pageNumber);
+                        if(pageNumberTextView != null )pageNumberTextView.setText(""+pageNumber);
+                        Toast.makeText(getActivity(), pageNumber + "/" + totalPages, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+
         return mRootView;
     }
 
-    private void updateMovies(String reuest_type) {
+    private void updateMovies(String reuest_type, int page) {
         Context myContext = getActivity().getApplicationContext();
-        String URL = "http://api.themoviedb.org/3/movie/" + reuest_type + "?api_key="
-                + VolleySingleton.getInstance(myContext).getApi_key();
+        final String URL = "http://api.themoviedb.org/3/movie/" + reuest_type + "?api_key="
+                + VolleySingleton.getInstance(myContext).getApi_key() + "&language=en-US&page=" + page;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d(LOG_TAG, " request : " + URL);
                         Log.d(LOG_TAG, " response : " + response);
                         try {
                             JSONObject resultJson = new JSONObject(response);
+
+                            // get total pages
+                            totalPages = resultJson.getInt("total_pages");
+
                             JSONArray moviesArrayJson = resultJson.getJSONArray("results");
                             //result = new ArrayList<>();
                             result.clear();
