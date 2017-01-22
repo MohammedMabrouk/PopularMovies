@@ -2,8 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:compat="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/search_icon"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search_black_24dp"
+        compat:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/rating_type"
-        android:icon="@drawable/rating"
+        android:icon="@drawable/ic_sort_black_24dp"
         android:title="Sort Type"
         compat:showAsAction="always">
 
@@ -14,9 +19,6 @@
             <item
                 android:id="@+id/top_rated"
                 android:title="@string/top_rated_movies" />
-            <!-- <item
-                android:id="@+id/latest"
-                android:title="@string/latest_movies" /> -->
             <item
                 android:id="@+id/now_playing"
                 android:title="@string/now_playing_movies" />
