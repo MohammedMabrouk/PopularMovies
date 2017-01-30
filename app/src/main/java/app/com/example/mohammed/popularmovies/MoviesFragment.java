@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -273,11 +274,7 @@ public class MoviesFragment extends Fragment {
                                 myAdapter = new ImageAdapter(getActivity(), result);
                                 gridview.setAdapter(myAdapter);
                             }
-                            loadingProgressBar.setVisibility(View.INVISIBLE);
-
-                            ProgressBar spinner;
-                            spinner = (ProgressBar) mRootView.findViewById(R.id.progressBar);
-                            spinner.setVisibility(View.GONE);
+                            if(loadingProgressBar != null )loadingProgressBar.setVisibility(View.INVISIBLE);
 
                         } catch (JSONException e) {
                             Log.d(LOG_TAG, "error : " + e);
@@ -340,6 +337,9 @@ public class MoviesFragment extends Fragment {
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
+
+
+
         // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -358,7 +358,16 @@ public class MoviesFragment extends Fragment {
             }
         });
 
-        builder.show();
+        AlertDialog dialog = builder.create();
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        //builder.show();
+        dialog.show();
+    }
+
+    public void showMessage(String message){
+
     }
 
 
