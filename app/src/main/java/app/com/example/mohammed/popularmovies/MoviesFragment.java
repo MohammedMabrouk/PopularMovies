@@ -287,7 +287,7 @@ public class MoviesFragment extends Fragment {
                 Log.d(LOG_TAG, "ERROR :" + error);
                 ProgressBar spinner;
                 spinner = (ProgressBar) mRootView.findViewById(R.id.progressBar);
-                spinner.setVisibility(View.GONE);
+                if(spinner != null) spinner.setVisibility(View.GONE);
                 addNetworkErrorMsg();
             }
         });
