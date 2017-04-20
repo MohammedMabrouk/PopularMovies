@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    tools:context="app.com.example.mohammed.popularmovies.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/movies_fragment_layout"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4.5">
+        <TextView
+            android:id="@+id/tv_main_sort_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:background="#F5F5F5"
+            android:textColor="?android:attr/textColorSecondary"
+            android:fontFamily="sans-serif"
+            android:text="Popular"/>
+
+        <FrameLayout
+            android:id="@+id/movies_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/details_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:background="#F5F5F5"
+            android:textColor="?android:attr/textColorSecondary"
+            android:fontFamily="sans-serif"
+            android:text="Select Movie To view Details"/>
+    </FrameLayout>
+
+
+
+</LinearLayout>

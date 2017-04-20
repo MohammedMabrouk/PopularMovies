@@ -162,7 +162,7 @@ public class MoviesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment...
         mRootView = inflater.inflate(R.layout.fragment_movies, container, false);
         gridview = (GridView) mRootView.findViewById(R.id.gridview);
         dbAdapter = new DBAdapter(getActivity());

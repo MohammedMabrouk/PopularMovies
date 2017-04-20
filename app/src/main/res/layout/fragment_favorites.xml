@@ -1,0 +1,29 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="app.com.example.mohammed.popularmovies.FavoritesFragment">
+    <TextView
+        android:id="@+id/fav_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:padding="6dp"
+        android:textAlignment="center"
+        android:background="#F5F5F5"
+        android:textColor="?android:attr/textColorSecondary"
+        android:fontFamily="sans-serif"
+        android:layout_gravity="center_vertical"/>
+    <GridView
+        android:id="@+id/fav_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:numColumns="auto_fit"
+        android:horizontalSpacing="2dp"
+        android:verticalSpacing="2dp"
+        android:columnWidth="120dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"/>
+
+</FrameLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#E0E0E0"
+    android:padding="2dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp">
+    <ImageView
+        android:id="@+id/player_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/player"
+        android:padding="5dp"/>
+    <TextView
+        android:id="@+id/trailer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/player_icon"
+        android:text="Reviews"
+        android:layout_marginTop="5px"
+        android:textSize="17dp"
+        android:textColor="#4e4d4d"/>
+    <TextView
+        android:id="@+id/details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/player_icon"
+        android:layout_below="@id/trailer_name"
+        android:text="Reviews"
+        android:layout_marginTop="5px"
+        android:textSize="10dp"
+        android:textColor="#4e4d4d"/>
+
+</RelativeLayout>
